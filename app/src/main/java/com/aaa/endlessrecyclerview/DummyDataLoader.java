@@ -21,7 +21,7 @@ public class DummyDataLoader extends AsyncTask<Void, Void, Integer> {
     protected Integer doInBackground(Void... voids)
     {
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.SECONDS.sleep(0);
         }
         catch (InterruptedException iEx) {
             iEx.printStackTrace();

@@ -8,10 +8,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.aaa.endlessrecyclerview.utils.Utils;
 
@@ -48,9 +50,12 @@ public class MainActivity extends AppCompatActivity implements TwoWayEndlessAdap
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        recyclerView.setLayoutManager(layoutManager);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL);
+
+
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
         endlessAdapter = new TwoWayEndlessAdapterImp<>();
         endlessAdapter.setDataContainer(new ArrayList<ValueItem>());
@@ -87,12 +92,24 @@ public class MainActivity extends AppCompatActivity implements TwoWayEndlessAdap
     public void onTopReached()
     {
         isAtTop = true;
+
+        Toast.makeText(this,"loading top",Toast.LENGTH_SHORT).show();
+
+        if (dataLoader != null) {
+            dataLoader.cancel(true);
+            dataLoader = null;
+        }
+
+        dataLoader = new DummyDataLoader();
+        dataLoader.setDataLoaderCallback(swipeResponseCallback);
+        dataLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onBottomReached()
     {
         isAtTop = false;
+        Toast.makeText(this,"loading bottom",Toast.LENGTH_SHORT).show();
 
         if (dataLoader == null) {
             dataLoader = new DummyDataLoader();

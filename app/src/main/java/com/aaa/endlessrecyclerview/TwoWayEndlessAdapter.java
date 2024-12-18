@@ -190,7 +190,7 @@ public abstract class TwoWayEndlessAdapter<VH extends RecyclerView.ViewHolder, D
                     mEndlessCallback.onTopReached();
                 }
             }
-        }, 50);
+        }, 500);
 
     }
 
@@ -208,7 +208,7 @@ public abstract class TwoWayEndlessAdapter<VH extends RecyclerView.ViewHolder, D
                     mEndlessCallback.onBottomReached();
                 }
             }
-        }, 50);
+        }, 500);
     }
 
     /**
